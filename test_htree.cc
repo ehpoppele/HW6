@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN //Have catch provide our main function
 #include "catch.hpp"
-#include "htree.cc"
+#include "htree.hh"
 
 TEST_CASE( "Trees! Trees should be able to store data, and all four relevant functions should work.", "[Tree]" ) 
 {

@@ -1,4 +1,5 @@
 #include "htree.hh"
+#include <assert.h>
 
 HTree::HTree(int key,
              uint64_t value,
@@ -11,24 +12,28 @@ HTree::HTree(int key,
     right_ = right;
 }   
 
-HTree::~HTree() //Simple destructor ensures we free up memory of values that our object held
+//Simple destructor, but no work needs to be done
+HTree::~HTree()
 {
-    //delete &key_;
-    //delete &value_;
-    //delete &left_;
-    //delete &right_;
+    //key and value are both ints that don't need to be deleted
+    //The left and right are both shared pointers, so they don't
+    //need to be deleted, since they destroy themselves when
+    //they go out of scope.
 }
 
+//returns the key held in a tree
 int HTree::get_key() const
 {
     return key_;
 }
 
+//Returns the value in a tree
 uint64_t HTree::get_value() const
 {
     return value_;
 }
 
+//Gets the child of tree in a given direction
 HTree::tree_ptr_t HTree::get_child(Direction dir) const
 {
     if (dir == Direction::LEFT)
@@ -38,6 +43,7 @@ HTree::tree_ptr_t HTree::get_child(Direction dir) const
     return right_;
 }
 
+//Returns the path to a child holding the given key, as a list of directions (LEFT and RIGHT)
 HTree::path_t HTree::path_to(int key) const
 {
     HTree::path_t path_taken;
@@ -64,7 +70,8 @@ HTree::path_t HTree::path_to(int key) const
     return path_taken;//Return statement at end to make compiler happy
 }       
 
-bool HTree::contains_key(int key) const//Helper function that recursively checks if a tree contains a given key
+//Helper function that recursively checks if a tree contains a given key
+bool HTree::contains_key(int key) const
 {
     if (key_ == key) return true;
     if (left_ && left_->contains_key(key)) return true;//similar syntax to above to ensure we don't try to call a method on a non-object
